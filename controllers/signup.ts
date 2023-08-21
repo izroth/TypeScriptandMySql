@@ -1,6 +1,6 @@
 const singupdb = require('../db/db.ts');
 const bcrypt = require('bcrypt');
-
+const jsonwebtokenlogin = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 const saltRounds = 10;
@@ -38,6 +38,31 @@ const signup = (req: any, res: any) => {
                                             console.log(insertErr);
                                             return res.status(500).json('Database error');
                                         } else {
+                                            // Generate token and send it to the client side and store it in login table
+                                            const token = jsonwebtokenlogin.sign(
+                                                {
+                                                    email: email,
+                                                    id: insertResults.insertId
+                                                },
+                                                process.env.JWT_KEY,
+                                                {
+                                                    expiresIn: '1h'
+                                                }
+                                            );
+                                            singupdb.query(
+                                                `INSERT INTO login (email, password,timestamp, jwt) VALUES (?,?)`,
+                                                [email, hash, token],
+                                                (insertErr: any, insertResults: any) => {
+                                                    if (insertErr) {
+                                                        console.log(insertErr);
+                                                        return res.status(500).json('Database error');
+                                                    } else {
+                                                        console.log('Data inserted into login table');
+                                                    }
+                                                }
+                                            );
+                                            
+
                                             console.log('Data inserted into signup table');
                                             return res.status(200).json('Success');
                                         }
