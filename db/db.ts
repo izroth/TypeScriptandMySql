@@ -22,7 +22,8 @@ connection.query(
         id INT PRIMARY KEY AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL,
+        timestamp datetime NOT NULL
     )`,
     (err: any, results: any) => {
         if (err) {
@@ -38,7 +39,9 @@ connection.query(
     `CREATE TABLE IF NOT EXISTS login (
         id INT PRIMARY KEY AUTO_INCREMENT,
         email VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL,
+        jwt VARCHAR(255) NOT NULL,
+        timestamp datetime NOT NULL
     )`,
     (err: any, results: any) => {
         if (err) {

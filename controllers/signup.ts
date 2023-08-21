@@ -1,5 +1,7 @@
 const db = require('../db/db.ts');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 const saltRounds = 10;
 
 const signup = (req, res) => {
