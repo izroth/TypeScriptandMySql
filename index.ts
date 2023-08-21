@@ -4,9 +4,14 @@ const bodyParser = require('body-parser');
 const port = 3000;
 app.use(bodyParser.json());
 require('./db/db.ts');
+
+const authenticatemiddleware = require('./middlewares/authentication');
 const signuprouter = require('./routes/singup');
 
+const loginrouters = require('./routes/login');
+
 app.use('/register',signuprouter);
+app.use('/login',[authenticatemiddleware],loginrouters);
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);

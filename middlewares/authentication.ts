@@ -1,7 +1,7 @@
 //authenticates the user
 const jwt = require('jsonwebtoken');
 const authenicateenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 const authenticate = (req: { headers: { authorization: string; }; userData: any; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; }): any; new(): any; }; }; }, next: () => void) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
