@@ -1,7 +1,7 @@
-const expresrouters = require('express');
-const router = expresrouters.Router();
+const singuprouters = require('express');
+const router = singuprouters.Router();
 const signupcontroller = require('../controllers/signup');
-router.post('/signup', signup);
+router.post('/signup', signupcontroller);
 
 
 
