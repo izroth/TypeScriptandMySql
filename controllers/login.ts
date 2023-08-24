@@ -10,7 +10,7 @@ const login =async (req: { body: { email: any; password: any; }; }, res: { statu
         }
         // check if user exists
         logintable.query(
-            `SELECT * FROM login WHERE email = ?`,
+            `SELECT * FROM singup WHERE email = ?`,
             [email],
             (err: any, results: any) => { // Specify types for 'err' and 'results'
                 if (err) {

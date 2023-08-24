@@ -23,7 +23,8 @@ connection.query(
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        timestamp datetime NOT NULL
+        timestamp datetime NOT NULL,
+        jwt VARCHAR(255) NOT NULL
     )`,
     (err: any, results: any) => {
         if (err) {
@@ -34,24 +35,7 @@ connection.query(
         }
     }
 );
-//create table login
-connection.query(
-    `CREATE TABLE IF NOT EXISTS login (
-        id INT PRIMARY KEY AUTO_INCREMENT,
-        email VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        jwt VARCHAR(255) NOT NULL,
-        timestamp datetime NOT NULL
-    )`,
-    (err: any, results: any) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            console.log('Table login created');
-        }
-    }
-);
+
 //create table for messages
 connection.query(
     `CREATE TABLE IF NOT EXISTS messages (
