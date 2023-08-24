@@ -52,6 +52,25 @@ connection.query(
         }
     }
 );
+//create table for messages
+connection.query(
+    `CREATE TABLE IF NOT EXISTS messages (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        sender VARCHAR(255) NOT NULL,
+        receiver VARCHAR(255) NOT NULL,
+        message VARCHAR(255) NOT NULL,
+        timestamp datetime NOT NULL
+    )`,
+    (err: any, results: any) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('Table messages created');
+        }
+    }
+);
+
 
 
 module.exports = connection;
