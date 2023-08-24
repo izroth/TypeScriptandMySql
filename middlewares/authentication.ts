@@ -16,7 +16,7 @@ const authenticate = (
 ) => {
   try {
     const token = req.headers.authorization;
-    console.log(token)
+
 
     //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxha2hhbnNoYXJtYTg5MDJAZ21haWwuY29tIiwiaWF0IjoxNjkyODY0ODU0LCJleHAiOjE2OTI4Njg0NTR9.RQOCOS9xgTF0tQ_BFZ_U4mgv490CZBBBNf74sRIIzDQ
     const decoded = jwt.verify(token, process.env.JWT_KEY);
@@ -43,8 +43,7 @@ const authenticate = (
             }
         }
     );
-    console.log('decoded')
-    console.log(decoded)
+   
     req.Email = decoded.email;
 
     
