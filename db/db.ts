@@ -43,6 +43,7 @@ connection.query(
         sender VARCHAR(255) NOT NULL,
         receiver VARCHAR(255) NOT NULL,
         message VARCHAR(255) NOT NULL,
+        attachment VARCHAR(255) NOT NULL,
         timestamp datetime NOT NULL
     )`,
     (err: any, results: any) => {
