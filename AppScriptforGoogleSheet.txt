@@ -1,0 +1,20 @@
+function doPost(e) {  
+  var data = JSON.parse(e.postData.contents);
+  var name = data.name;
+  var email = data.email;
+  var feedback = data.feedback;
+  
+  var valuesToAppend = [[name, email, feedback]];
+  
+  Sheets.Spreadsheets.Values.append(
+    {
+      "majorDimension": "ROWS",
+      "values": valuesToAppend
+    },
+    SpreadsheetApp.getActiveSpreadsheet().getId(),
+    SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getSheetName() + "!A:A",
+    { valueInputOption: "USER_ENTERED" }
+  );
+  
+  return ContentService.createTextOutput("Thanks for your feedback, " + name + "!");
+}
