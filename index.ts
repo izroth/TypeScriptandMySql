@@ -12,7 +12,7 @@ const loginrouters = require('./routes/login');
 const messagerouters = require('./routes/messages');
 
 app.use('/register',signuprouter);
-app.use('/login',[authenticatemiddleware],loginrouters);
+app.use('/login',loginrouters);
 app.use('/messages',[authenticatemiddleware],messagerouters);
 
 

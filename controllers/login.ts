@@ -1,4 +1,4 @@
-const logintable = require('../db/db');
+const usertable = require('../db/db');
 const jsonwebtoken = require('jsonwebtoken');
 const dbcrypt = require('bcrypt');
 
@@ -8,42 +8,55 @@ const login =async (req: { body: { email: any; password: any; }; }, res: { statu
         if (!email || !password) {
             return res.status(400).json('Incorrect form submission');
         }
-        // check if user exists
-        logintable.query(
-            `SELECT * FROM singup WHERE email = ?`,
+        //chcek if user exists
+        usertable.query(
+            `SELECT * FROM signup WHERE email = ?`,
             [email],
-            (err: any, results: any) => { // Specify types for 'err' and 'results'
+            (err: any, results: any) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).json('Database error');
-                } else {
-                    if (results.length > 0) {
-                        // compare password
-                        dbcrypt.compare(password, results[0].password, (hashErr: any, hash: any) => {
-                            if (hashErr) {
-                                console.log(hashErr);
-                                return res.status(500).json('Hashing error');
-                            } else {
-                                // generate token
-                                const token = jsonwebtoken.sign(
-                                    {
-                                        email: results[0].email,
-                                        id: results[0].id
-                                    },
-                                    process.env.JWT_KEY,
-                                    {
-                                        expiresIn: '1h'
-                                    }
-                                );
-                                return res.status(200).json(token);
-                            }
-                        });
-                    } else {
-                        return res.status(400).json('User does not exist');
-                    }
                 }
+                if (results.length === 0) {
+                    return res.status(400).json('User does not exist');
+                }
+                //check if password is correct
+                dbcrypt.compare(password, results[0].password, (bcryptErr: any, bcryptResults: any) => {
+                    if (bcryptErr) {
+                        console.log(bcryptErr);
+                        return res.status(500).json('Database error');
+                    }
+                    if (!bcryptResults) {
+                        return res.status(400).json('Invalid credentials');
+                    }
+                    //recrate token
+                    const token = jsonwebtoken.sign(
+                        {
+                            email: email
+                        },
+                        process.env.JWT_KEY,
+                        {
+                            expiresIn: '1h'
+                        }
+                    );
+                    console.log(`${token} is the token`);
+                    //update token in db
+                    usertable.query(
+                        `UPDATE signup SET jwt = ? WHERE email = ?`,
+                        [token, email],
+                        (updateErr: any, updateResults: any) => {
+                            if (updateErr) {
+                                console.log(updateErr);
+                                return res.status(500).json('Database error');
+                            }
+                            console.log('Token updated in signup table');
+                        }
+                    );
+                    return res.status(200).json(JSON.stringify({ message: 'Success', token: token }));
+                });
             }
         );
+        
     } catch (err) {
         console.log(err);
         return res.status(400).json('An error occurred');
